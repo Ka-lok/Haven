@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <ImageView android:layout_height="50dp" android:layout_width="50dp" android:layout_margin="5dp" android:id="@+id/ContactImage"/>
+
+  <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/ContactName" android:layout_marginLeft="5dp" android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+</LinearLayout>
