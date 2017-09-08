@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1058311636460",
+    "firebase_url": "https://haven-48acf.firebaseio.com",
+    "project_id": "haven-48acf",
+    "storage_bucket": "haven-48acf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058311636460:android:f802aab60f1d4abc",
+        "android_client_info": {
+          "package_name": "HavenSolution.HavenAndroidApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058311636460-rnagpmdvop2fr46qnliku06tdc14s0qu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5IRXTXgQGpXmJUEQZoyyuQXs4zbx4dIk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058311636460:android:b7c781c493b1abc6",
+        "android_client_info": {
+          "package_name": "HavenAndroidApp.HavenAndroidApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058311636460-rnagpmdvop2fr46qnliku06tdc14s0qu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5IRXTXgQGpXmJUEQZoyyuQXs4zbx4dIk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

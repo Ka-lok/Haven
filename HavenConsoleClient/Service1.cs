@@ -221,17 +221,25 @@ public interface IService1
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckIn", ReplyAction="http://tempuri.org/IService1/CheckInResponse")]
     System.Threading.Tasks.Task<System.DateTime> CheckInAsync(System.DateTime DateTime);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckOrAddNumber", ReplyAction="http://tempuri.org/IService1/CheckOrAddNumberResponse")]
-    bool CheckOrAddNumber(string PhoneNumber);
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersNumber", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersNumberResponse")]
+    bool CheckAndAddUsersNumber(string PhoneNumber);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckOrAddNumber", ReplyAction="http://tempuri.org/IService1/CheckOrAddNumberResponse")]
-    System.Threading.Tasks.Task<bool> CheckOrAddNumberAsync(string PhoneNumber);
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersNumber", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersNumberResponse")]
+    System.Threading.Tasks.Task<bool> CheckAndAddUsersNumberAsync(string PhoneNumber);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddContacts", ReplyAction="http://tempuri.org/IService1/AddContactsResponse")]
-    HavenWcfService.ContactData[] AddContacts(HavenWcfService.Contact[] ContactList);
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForNewUser", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForNewUserResponse")]
+    HavenWcfService.ContactData[] CheckAndAddUsersPhoneContactsForNewUser(HavenWcfService.Contact[] ContactList);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddContacts", ReplyAction="http://tempuri.org/IService1/AddContactsResponse")]
-    System.Threading.Tasks.Task<HavenWcfService.ContactData[]> AddContactsAsync(HavenWcfService.Contact[] ContactList);
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForNewUser", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForNewUserResponse")]
+    System.Threading.Tasks.Task<HavenWcfService.ContactData[]> CheckAndAddUsersPhoneContactsForNewUserAsync(HavenWcfService.Contact[] ContactList);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForExistingUser", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForExistingUserResponse" +
+        "")]
+    HavenWcfService.ContactData[] CheckAndAddUsersPhoneContactsForExistingUser(HavenWcfService.Contact[] ContactList, string PhoneNumber);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForExistingUser", ReplyAction="http://tempuri.org/IService1/CheckAndAddUsersPhoneContactsForExistingUserResponse" +
+        "")]
+    System.Threading.Tasks.Task<HavenWcfService.ContactData[]> CheckAndAddUsersPhoneContactsForExistingUserAsync(HavenWcfService.Contact[] ContactList, string PhoneNumber);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -298,23 +306,33 @@ public partial class Service1Client : System.ServiceModel.ClientBase<IService1>,
         return base.Channel.CheckInAsync(DateTime);
     }
     
-    public bool CheckOrAddNumber(string PhoneNumber)
+    public bool CheckAndAddUsersNumber(string PhoneNumber)
     {
-        return base.Channel.CheckOrAddNumber(PhoneNumber);
+        return base.Channel.CheckAndAddUsersNumber(PhoneNumber);
     }
     
-    public System.Threading.Tasks.Task<bool> CheckOrAddNumberAsync(string PhoneNumber)
+    public System.Threading.Tasks.Task<bool> CheckAndAddUsersNumberAsync(string PhoneNumber)
     {
-        return base.Channel.CheckOrAddNumberAsync(PhoneNumber);
+        return base.Channel.CheckAndAddUsersNumberAsync(PhoneNumber);
     }
     
-    public HavenWcfService.ContactData[] AddContacts(HavenWcfService.Contact[] ContactList)
+    public HavenWcfService.ContactData[] CheckAndAddUsersPhoneContactsForNewUser(HavenWcfService.Contact[] ContactList)
     {
-        return base.Channel.AddContacts(ContactList);
+        return base.Channel.CheckAndAddUsersPhoneContactsForNewUser(ContactList);
     }
     
-    public System.Threading.Tasks.Task<HavenWcfService.ContactData[]> AddContactsAsync(HavenWcfService.Contact[] ContactList)
+    public System.Threading.Tasks.Task<HavenWcfService.ContactData[]> CheckAndAddUsersPhoneContactsForNewUserAsync(HavenWcfService.Contact[] ContactList)
     {
-        return base.Channel.AddContactsAsync(ContactList);
+        return base.Channel.CheckAndAddUsersPhoneContactsForNewUserAsync(ContactList);
+    }
+    
+    public HavenWcfService.ContactData[] CheckAndAddUsersPhoneContactsForExistingUser(HavenWcfService.Contact[] ContactList, string PhoneNumber)
+    {
+        return base.Channel.CheckAndAddUsersPhoneContactsForExistingUser(ContactList, PhoneNumber);
+    }
+    
+    public System.Threading.Tasks.Task<HavenWcfService.ContactData[]> CheckAndAddUsersPhoneContactsForExistingUserAsync(HavenWcfService.Contact[] ContactList, string PhoneNumber)
+    {
+        return base.Channel.CheckAndAddUsersPhoneContactsForExistingUserAsync(ContactList, PhoneNumber);
     }
 }

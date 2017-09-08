@@ -11,17 +11,25 @@ using static Android.Provider.ContactsContract.CommonDataKinds;
 using System.Diagnostics;
 using Android.Database;
 using HavenWcfService;
+using Android.OS;
+using Android.Runtime;
+using Java.Interop;
 
 namespace HavenAndroidApp
 {
-    internal class ContactsAdapter : BaseAdapter
+    internal class ContactsAdapter : BaseAdapter, IParcelable
     {
        public List<Contact> _contactList;
         Activity activity;
 
+        public List<string> DisplayString;
+        private Dictionary<string, int> ContactToDisplayStringDictionary;
+        
+
         public ContactsAdapter(Activity activity)
         {
             this.activity = activity;
+            
             FillContacts();
         }
 
@@ -44,12 +52,15 @@ namespace HavenAndroidApp
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
+
+
             var view = convertView ?? activity.LayoutInflater.Inflate(
                 Resource.Layout.ContactListItem, parent, false);
+
             var contactName = view.FindViewById<TextView>(Resource.Id.ContactName);
             var contactImage = view.FindViewById<ImageView>(Resource.Id.ContactImage);
-            contactName.Text = _contactList[position].Name + " Id:" + _contactList[position].LocalId;
-
+            // contactName.Text = _contactList[position].Name + " :" + _contactList[position].LocalId;
+            contactName.Text = DisplayString[position];
             if (_contactList[position].PhotoId == null)
             {
                 contactImage = view.FindViewById<ImageView>(Resource.Id.ContactImage);
@@ -63,11 +74,14 @@ namespace HavenAndroidApp
                     Contacts.Photos.ContentDirectory);
                 contactImage.SetImageURI(contactPhotoUri);
             }
+
             return view;
         }
 
         void FillContacts()
         {
+            DisplayString = new List<string>();
+            ContactToDisplayStringDictionary = new Dictionary<string, int>();
             var uri = ContactsContract.Contacts.ContentUri;
 
             string[] projection = {
@@ -128,11 +142,67 @@ namespace HavenAndroidApp
                         cursor.GetColumnIndex(projection[1]))]
                         
                         });
+
+                        DisplayString.Add(cursor.GetString(cursor.GetColumnIndex(projection[1])));
+                        ContactToDisplayStringDictionary.Add(DictionaryIdToPhoneNumber[cursor.GetString(
+                        cursor.GetColumnIndex(projection[1]))], _contactList.Count - 1);
                     }
 
                 } while (cursor.MoveToNext());
 
             }
         }
+
+        public void UpdateContactListWithContactData(List<ContactData> contactDataList)
+        {
+            
+            foreach (var ContactData in contactDataList)
+            {
+                if (ContactData.CheckedIn)
+                {
+                   
+                     DisplayString[ContactToDisplayStringDictionary[ContactData.PhoneNumber]] = DisplayString[ContactToDisplayStringDictionary[ContactData.PhoneNumber]] + (ContactData.lastCheckInTime).ToString();
+                    //DisplayString[ContactToDisplayStringDictionary[ContactData.PhoneNumber]] = (ContactData.lastCheckInTime).ToString();
+                   
+                }
+                
+             
+            }
+
+        }
+        //[ExportField("CREATOR")]
+        //public static MyParcelableCreator InitializeCreator()
+        //{
+          
+        //    return new MyParcelableCreator();
+        //}
+
+
+        public int DescribeContents()
+        {
+            return 0;
+        }
+
+        public void WriteToParcel(Parcel dest, [GeneratedEnum] ParcelableWriteFlags flags)
+        {
+            dest.WriteTypedList(_contactList);
+            
+        }
+
+
+        //class MyParcelableCreator : Java.Lang.Object, IParcelableCreator
+        //{
+        //    public Java.Lang.Object CreateFromParcel(Parcel source)
+        //    {
+        //        Console.WriteLine("MyParcelableCreator.CreateFromParcel");
+        //        return new ContactsAdapter(source.ReadString());
+        //    }
+
+        //    public Java.Lang.Object[] NewArray(int size)
+        //    {
+        //        Console.WriteLine("MyParcelableCreator.NewArray");
+        //        return new Java.Lang.Object[size];
+        //    }
+        //}
     }
 }

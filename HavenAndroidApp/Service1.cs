@@ -168,6 +168,10 @@ namespace HavenWcfService
         
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        private bool CheckedInField;
+        
+        private string PhoneNumberField;
+        
         private System.DateTime lastCheckInTimeField;
         
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
@@ -179,6 +183,32 @@ namespace HavenWcfService
             set
             {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool CheckedIn
+        {
+            get
+            {
+                return this.CheckedInField;
+            }
+            set
+            {
+                this.CheckedInField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PhoneNumber
+        {
+            get
+            {
+                return this.PhoneNumberField;
+            }
+            set
+            {
+                this.PhoneNumberField = value;
             }
         }
         

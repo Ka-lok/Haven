@@ -1,10 +1,13 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+
 
 namespace HavenWcfService
 {
@@ -74,11 +77,15 @@ namespace HavenWcfService
     }
 
     [DataContract]
-    public class ContactData
+    public class ContactData 
     {
         [DataMember]
         public DateTime lastCheckInTime { get; set; }
+        [DataMember]
         public bool CheckedIn { get; set; }
+        [DataMember]
         public string PhoneNumber { get; set; }
+  
     }
+
 }

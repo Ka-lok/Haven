@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Web.Script.Serialization;
 
 namespace HavenWcfService
 {
@@ -30,7 +33,8 @@ namespace HavenWcfService
             cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.Connection = con;
-
+            Debug.WriteLine("Service has now been set up");
+            SendPushNotification("dTsm6mZp1fw:APA91bGCgyCA-Ut1vpj6CtGs5nEfLNx14GaTDGTYGMDWu71_z64OfcBqCgzKILqdNe4yH_GGEDON8IxOymyRks04XwFKcJ9FZORFPYGfQAwORm5G8hpStKEirs2t1G2C9T6BOrU62Kox");
             //cmd.CommandText = "UPDATE \"User\" SET LastCheckIn = @DateNow WHERE Id = 1;";
             //cmd.Parameters.AddWithValue("@DateNow", DateTime.Now);
 
@@ -346,11 +350,10 @@ namespace HavenWcfService
         private List<ContactData> ReturnContactDataListFromContactList(List<Contact> contactList)
         {
             List<ContactData> contactDataList = new List<ContactData>();
-           
-
+            
             foreach (var contact in contactList)
             {
-                cmd.CommandText = "Select LastCheckIn From \"User\" WHERE PhoneNumber = " + contact.PhoneNumber;
+                cmd.CommandText = "Select LastCheckIn, CheckInPostive From \"User\" WHERE PhoneNumber = " + contact.PhoneNumber;
                 //cmd.Parameters.AddWithValue("@ContactPhoneNumber",contact.PhoneNumber);
                 con.Open();
                 reader = cmd.ExecuteReader();
@@ -358,12 +361,14 @@ namespace HavenWcfService
                 {
 
                     DateTime lastCheckIn = reader.GetDateTime(0);
+                    Boolean CheckedIn = reader.GetBoolean(1);
                     contactDataList.Add(new ContactData
                     {
 
                         PhoneNumber = contact.PhoneNumber,
-                        lastCheckInTime = lastCheckIn
-
+                        lastCheckInTime = lastCheckIn,
+                        CheckedIn = CheckedIn
+                        
                     }
 
                     );
@@ -391,7 +396,7 @@ namespace HavenWcfService
 
                 foreach (var HavenContact in ContactList)
                 {
-                    commandText = commandText + "INSERT INTO \"Relationships\"(Id,User1Id,User2Id) VALUES (SELECT IDENT_CURRENT('Relationships')+1)," + PhoneNumber + "," + HavenContact.PhoneNumber + ");";
+                    commandText = commandText + "INSERT INTO \"Relationships\"(Id,User1Id,User2Id) VALUES ("+ (NextRelationId() + 1) + "," + PhoneNumber + "," + HavenContact.PhoneNumber + ");";
                 }
 
                 //cmd.CommandText = "INSERT INTO \"Relationships\" (Id,UserId1,UserId2) VALUES (@RelationId,@UserId1,@UserId2);";
@@ -404,6 +409,60 @@ namespace HavenWcfService
             }
 
             return ReturnContactDataListFromContactList(ContactList);
+        }
+
+        public static void SendPushNotification(String deviceid)
+        {
+
+            try
+            {
+
+                string applicationID = "1:1058311636460:android:b7c781c493b1abc6";
+
+                string senderId = "1058311636460";
+
+                string deviceId = deviceid;
+
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+                tRequest.Method = "post";
+                tRequest.ContentType = "application/json";
+                var data = new
+                {
+                    to = deviceId,
+                    notification = new
+                    {
+                        body = "Osama",
+                        title = "AlBaami",
+                        sound = "Enabled"
+
+                    }
+                };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                tRequest.ContentLength = byteArray.Length;
+                using (Stream dataStream = tRequest.GetRequestStream())
+                {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    using (WebResponse tResponse = tRequest.GetResponse())
+                    {
+                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                        {
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                string str = sResponseFromServer;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string str = ex.Message;
+            }
         }
     }
 }
